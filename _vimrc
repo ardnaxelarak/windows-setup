@@ -42,9 +42,9 @@ endfunction
 set encoding=utf-8
 scriptencoding utf-8
 
-set dir=~/.vim/tmp/swap//
-set undodir=~/.vim/tmp/undo//
-set backupdir=~/.vim/tmp/backup//
+set dir=~/vimfiles/tmp/swap//
+set undodir=~/vimfiles/tmp/undo//
+set backupdir=~/vimfiles/tmp/backup//
 
 set nu
 set ts=2
@@ -70,7 +70,9 @@ inoremap <C-V> <C-R>+
 hi SpecialKey guifg=#d8d898
 set list listchars=tab:ᴛᴀʙ,trail:▸
 
-au BufNewFile,BufRead *.asm set filetype=snes noet ts=4 shiftwidth=4 | hi Constant guifg=#74beff | hi Number guifg=DarkOrange | hi SpecialKey guifg=#d8d898
+au BufNewFile,BufRead *.asm set filetype=snes noet ts=4 shiftwidth=4 | hi Constant guifg=#74beff | hi Number guifg=DarkOrange
+
+au DirChanged global if filereadable(".vimrc.dir") | source .vimrc.dir | endif
 
 command Latex ! pdflatex -halt-on-error %
 command Xetex ! xelatex -halt-on-error %

@@ -83,28 +83,38 @@ Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Privacy"
 # remove searchbox from taskbar
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" -Name SearchTaskbarMode -Value 0
 
+# remove web results from windows search
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" -Name BingSearchEnabled -Value 0
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Search" -Name CortanaConsent -Value 0
+if (!(Test-Path -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer")) {
+    New-Item -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Value {}
+}
+Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name DisableSearchBoxSuggestions -Value 1
+
 # set config for ConEmu
 & "C:\Program Files\ConEmu\ConEmu64" -LoadCfgFile "$PSScriptRoot\ConEmu.xml" -SaveCfgFile "$HOME\AppData\Roaming\ConEmu.xml" -Exit
 
 # set up directories for vim
-if (!(Test-Path ~/.vim)) {
-    New-Item -Path ~/.vim -ItemType directory
+if (!(Test-Path ~/vimfiles)) {
+    New-Item -Path ~/vimfiles -ItemType directory
 }
-if (!(Test-Path ~/.vim/tmp)) {
-    New-Item -Path ~/.vim/tmp -ItemType directory
+if (!(Test-Path ~/vimfiles/tmp)) {
+    New-Item -Path ~/vimfiles/tmp -ItemType directory
 }
-if (!(Test-Path ~/.vim/tmp/undo)) {
-    New-Item -Path ~/.vim/tmp/undo -ItemType directory
+if (!(Test-Path ~/vimfiles/tmp/undo)) {
+    New-Item -Path ~/vimfiles/tmp/undo -ItemType directory
 }
-if (!(Test-Path ~/.vim/tmp/backup)) {
-    New-Item -Path ~/.vim/tmp/backup -ItemType directory
+if (!(Test-Path ~/vimfiles/tmp/backup)) {
+    New-Item -Path ~/vimfiles/tmp/backup -ItemType directory
 }
-if (!(Test-Path ~/.vim/tmp/swap)) {
-    New-Item -Path ~/.vim/tmp/swap -ItemType directory
+if (!(Test-Path ~/vimfiles/tmp/swap)) {
+    New-Item -Path ~/vimfiles/tmp/swap -ItemType directory
 }
 
 # set vimrc file for gVim
 Copy-Item "$PSScriptRoot\_vimrc" -Destination "$HOME\_vimrc"
+
+Copy-Item "$PSScriptRoot\vimfiles" -Destination "$HOME\vimfiles"
 
 uv python install
 
