@@ -4,7 +4,7 @@ syntax match snesLabel "\.*\w\+"
 
 " syntax region snesMacroDef start="macro" end="endmacro"
 
-syntax keyword snesDirective db dw dl org base incsrc incbin lorom hirom exhirom exlorom skip warnpc pushpc pullpc
+syntax keyword snesDirective db dw dl org base incsrc incbin include includefrom includeonce lorom hirom exhirom exlorom sa1rom fullsa1rom sfxrom norom skip warnpc pushpc pullpc print table pushtable pulltable freespace freedata freecode align cleaned static autoclean freespacebyte ram noram prot warn error assert check title bankcross warnings disable enable arch math pri round on off namespace nested bank dpbase optimize dp always none address pushbase pullbase pushns pullns global
 
 syntax match impreciseInstruction "ASL"
 syntax match impreciseInstruction "DEC"
@@ -188,12 +188,12 @@ syntax keyword errorInstruction
 syntax match snesNumber "\d\+"
 syntax match snesNumber "\$\x\+"
 
+syntax match snesString /"[^"]*"/
+
 syntax match snesImmediate "#\d\+"
 syntax match snesImmediate "#$\x\+"
 
 syntax match snesComment ";.*$"
-
-syntax match snesPrint "print.*$"
 
 syntax match snesMacro "%\w\+"
 syntax match snesLabelDef "^\s*?\?\w\+:"
@@ -212,6 +212,7 @@ highlight default link snesMacro PreProc
 highlight default link snesLabelDef Function
 highlight default link snesLabel Identifier
 highlight default link snesPrint Macro
+highlight default link snesString String
 
 highlight impreciseInstruction gui=underline
 highlight snesLabelDef gui=bold guifg=darkgreen
