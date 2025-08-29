@@ -6,18 +6,12 @@ Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller
 Refresh-Path
 
 $packages = @(
+    ,"NirSoft.AdvancedRun"
     ,"jqlang.jq"
     ,"Git.Git"
     ,"vim.vim"
     ,"Maximus5.ConEmu"
-    ,"Microsoft.VisualStudio.2022.Community"
-    ,"Microsoft.VisualStudio.2022.BuildTools"
-    ,"Microsoft.VisualStudioCode"
     ,"astral-sh.uv"
-    ,"Zen-Team.Zen-Browser"
-    ,"Klocman.BulkCrapUninstaller"
-    ,"OBSProject.OBSStudio"
-    ,"Discord.Discord"
 )
 
 foreach ($package in $packages) {
@@ -50,7 +44,7 @@ Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name ShowCopilotButton -Value 0
 
 # remove taskbar widgets button
-Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarDa -Value 0
+# Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarDa -Value 0
 
 # remove task view button
 Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name ShowTaskViewButton -Value 0
@@ -90,6 +84,7 @@ if (!(Test-Path -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer")) {
     New-Item -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Value {}
 }
 Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name DisableSearchBoxSuggestions -Value 1
+Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name AllowWindowsWidgets -Value 0
 
 # set config for ConEmu
 & "C:\Program Files\ConEmu\ConEmu64" -LoadCfgFile "$PSScriptRoot\ConEmu.xml" -SaveCfgFile "$HOME\AppData\Roaming\ConEmu.xml" -Exit
@@ -114,7 +109,7 @@ if (!(Test-Path ~/vimfiles/tmp/swap)) {
 # set vimrc file for gVim
 Copy-Item "$PSScriptRoot\_vimrc" -Destination "$HOME\_vimrc"
 
-Copy-Item "$PSScriptRoot\vimfiles" -Destination "$HOME\vimfiles"
+Copy-Item "$PSScriptRoot\vimfiles\*" -Destination "$HOME\vimfiles" -Recurse -Force
 
 uv python install
 
