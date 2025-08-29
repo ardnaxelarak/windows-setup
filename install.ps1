@@ -6,6 +6,8 @@ $packages = @(
     ,"Klocman.BulkCrapUninstaller"
     ,"Discord.Discord"
     ,"OBSProject.OBSStudio"
+    ,"SourMesen.Mesen2"
+    ,"Valve.Steam"
 )
 
 Clear-Host
@@ -27,7 +29,12 @@ foreach ($package in $packages) {
         $hasUpdate = $false
     }
     # winget install --id $package --accept-package-agreements
-    $info += , ($package, $hasUpdate, $installed, $hasUpdate)
+    $info += @{
+        Package = $package
+        Installed = $installed
+        HasUpdate = $hasUpdate
+        Selected = $hasUpdate
+    }
 }
 
 function DrawMenu {
@@ -43,17 +50,17 @@ function DrawMenu {
     for ($i = 0; $i -lt $len; $i++) {
         $item = $info[$i]
         $line = "  "
-        if ($item[2] -and !$item[3]) {
+        if ($item.Installed -and !$item.HasUpdate) {
             $line += "    "
-        } elseif ($item[1]) {
+        } elseif ($item.Selected) {
             $line += "[x] "
         } else {
             $line += "[ ] "
         }
-        $line += $item[0].PadRight(45)
-        if ($item[3]) {
+        $line += $item.Package.PadRight(45)
+        if ($item.HasUpdate) {
             $line += " Update Available"
-        } elseif (!$item[2]) {
+        } elseif (!$item.Installed) {
             $line += " Not Installed"
         }
         if ($i -eq $pos) {
@@ -81,8 +88,8 @@ function Menu {
                 $pos = 0
             }
         } elseif ($keycode -eq 32) {
-            if (!$info[$pos][2] -or $info[$pos][3]) {
-                $info[$pos][1] = !$info[$pos][1]
+            if (!$info[$pos].Installed -or $info[$pos].HasUpdate) {
+                $info[$pos].Selected = !$info[$pos].Selected
             }
         }
         DrawMenu
@@ -96,10 +103,10 @@ DrawMenu
 Write-Host
 
 foreach ($item in $info) {
-    if (!$item[1]) {
+    if (!$item.Selected) {
         continue
     }
-    winget install -e --id $item[0] --accept-package-agreements
+    winget install -e --id $item.Package --accept-package-agreements
 }
 
 Pause

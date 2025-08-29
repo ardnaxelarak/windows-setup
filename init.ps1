@@ -15,7 +15,7 @@ $packages = @(
 )
 
 foreach ($package in $packages) {
-    winget install --id $package --accept-package-agreements
+    winget install -e --id $package --accept-package-agreements
 }
 Refresh-Path
 
