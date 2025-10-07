@@ -12,6 +12,7 @@ $packages = @(
     ,"vim.vim"
     ,"Maximus5.ConEmu"
     ,"astral-sh.uv"
+    ,"Casey.Just"
 )
 
 foreach ($package in $packages) {

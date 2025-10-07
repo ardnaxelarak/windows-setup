@@ -8,6 +8,9 @@ $packages = @(
     ,"OBSProject.OBSStudio"
     ,"SourMesen.Mesen2"
     ,"Valve.Steam"
+    ,"ImageMagick.ImageMagick"
+    ,"GIMP.GIMP.3"
+    ,"KDE.Krita"
 )
 
 Clear-Host
