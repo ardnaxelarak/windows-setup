@@ -65,4 +65,10 @@ if (!(Test-Path -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer")) {
 Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name DisableSearchBoxSuggestions -Value 1
 Set-ItemProperty -Path "HKCU:\Software\Policies\Microsoft\Windows\Explorer" -Name AllowWindowsWidgets -Value 0
 
+# remove swipe lock screen before login
+if (!(Test-Path -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization")) {
+    New-Item -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization" -Value {}
+}
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization" -Name NoLockScreen -Value 1
+
 Pause
